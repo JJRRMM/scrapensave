@@ -12,8 +12,8 @@ var cheerio = require("cheerio");
 // Require all models
 var db = require("./models");
 
-var PORT = 3000;
-
+// var PORT = 3000;
+var PORT = process.env.PORT || 3000;
 // Initialize Express
 var app = express();
 
@@ -100,6 +100,7 @@ app.post("/articles/:id", function(req, res) {
   // save the new note that gets posted to the Notes collection
   // then find an article from the req.params.id
   // and update it's "note" property with the _id of the new note
+  console.log(" req.body is " + req.body);
   db.Note.create(req.body)
   .then(function(dbNote){
     return db.Article.findOneAndUpdate({ _id: req.params.id }, { note: dbNote._id}, {new: true})
@@ -112,17 +113,19 @@ app.post("/articles/:id", function(req, res) {
 
 app.delete("/articles/:id", function(req, res) {
   // var id = req.split(":");
-  console.log("req is " + req);
+  console.log("req is " + req.params.id);
   
-  db.Note.deleteOne ({
+    db.Note.deleteOne ({
     where: {
-      _id: req.params.id
+      id: req.params.id
     }
   })
     .then(function(dbNote) {
       res.json(dbNote);
     });
-});
+  });
+  
+
 // Route for the delete note: 
 // app.delete("/articles/:id", function(req,res){ 
 //    db.Note.delete(dbNote._id}

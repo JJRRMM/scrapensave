@@ -74,21 +74,21 @@ $(document).on("click", "#savenote", function() {
       // Grab the id associated with the article from the submit button
       var thisId = $(this).attr("data-id");
       
-      // Run a POST request to change the note, using what's entered in the inputs
+      // Run a DELETE request to delete the note, using what's entered in the inputs
       $.ajax({
         method: "DELETE",
         url: "/articles/" + thisId,
-        
+        data: {id: thisId} 
       })
         // With that done
-        .then(function(data) {
+        .then(function (data) {
           // Log the response
           console.log(data);
           // Empty the notes section
           $("#notes").empty();
         });
-        $("#titleinput").val("");
-        $("#bodyinput").val("");
-      });
+      $("#titleinput").val("");
+      $("#bodyinput").val("");
+    });
   // Also, remove the values entered in the input and textarea for note entry
   
